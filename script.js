@@ -1,8 +1,18 @@
 var snakeBody = document.querySelector(".snake");
 var body = document.querySelector("body");
 var boxBody = document.querySelector(".box");
+var startGame = document.querySelector(".startBtn")
+var GameResult = document.querySelector(".resultOfGame");
 var x = 0;
 var y = 0;
+var resultOfGame = 0;
+
+startGame.onclick = Pusk;
+
+function Pusk() {
+	location.reload();
+}
+
 body.onkeydown = function check(event) {
 	var key = event.keyCode;
 
@@ -17,14 +27,34 @@ body.onkeydown = function check(event) {
 			keyLeft();
 		}
 	} else {
-		alert("game over");
+		var gameOverout = document.querySelector(".gameOverout");
+		gameOverout.innerHTML = "game over";
+		GameResult.innerHTML = "Your result : " + resultOfGame + " points";
+		startGame.style.display = "block";
+		boxBody.remove();
 	}
 }
+
+
+//function createRandomBox() {
+//	var randomLeft = Math.round(Math.random() * (boxBody.offsetWidth - snakeBody.offsetWidth));
+//	var randomTop = Math.round(Math.random() * (boxBody.offsetHeight - snakeBody.offsetHeight));
+//	if (randomLeft <= (snakeBody.offsetLeft + snakeBody.offsetWidth * 2) && randomTop <= (snakeBody.offsetLeft + snakeBody.offsetHeight) * 2) {
+//		return createRandomBox();
+//	} else {
+//		var randomBox = document.createElement("div");
+//		boxBody.appendChild(randomBox);
+//		randomBox.classList.add("randomBox");
+//		randomBox.style.top = randomTop + "px";
+//		randomBox.style.left = randomLeft + "px";
+//	}
+//}
 
 function createRandomBox() {
 	var randomLeft = Math.round(Math.random() * (boxBody.offsetWidth - snakeBody.offsetWidth));
 	var randomTop = Math.round(Math.random() * (boxBody.offsetHeight - snakeBody.offsetHeight));
-	if (randomLeft <= (snakeBody.offsetLeft + snakeBody.offsetWidth * 2) && randomTop <= (snakeBody.offsetLeft + snakeBody.offsetHeight) * 2) {
+	GameResult.innerHTML = "Your result : " + resultOfGame + " points";
+	if (randomLeft % snakeBody.offsetWidth != 0 || randomTop % snakeBody.offsetHeight != 0) {
 		return createRandomBox();
 	} else {
 		var randomBox = document.createElement("div");
@@ -34,28 +64,49 @@ function createRandomBox() {
 		randomBox.style.left = randomLeft + "px";
 	}
 }
-for (var i = 0; i < 50; i++) {
-	createRandomBox();
-}
 
-
+createRandomBox();
 
 function keyUp() {
-	x--;
+	var randomBox = document.querySelector(".randomBox");
+	x -= snakeBody.offsetWidth;
 	snakeBody.style.top = x + "px";
+	if (snakeBody.offsetLeft == randomBox.offsetLeft && snakeBody.offsetTop == randomBox.offsetTop) {
+		randomBox.remove();
+		resultOfGame++;
+		createRandomBox();
+	}
 }
 
 function keyDown() {
-	x++;
+	var randomBox = document.querySelector(".randomBox");
+	x += snakeBody.offsetWidth;
 	snakeBody.style.top = x + "px";
+	if (snakeBody.offsetLeft == randomBox.offsetLeft && snakeBody.offsetTop == randomBox.offsetTop) {
+		randomBox.remove();
+		resultOfGame++;
+		createRandomBox();
+	}
 }
 
 function keyRight() {
-	y++;
+	var randomBox = document.querySelector(".randomBox");
+	y += snakeBody.offsetWidth;
 	snakeBody.style.left = y + "px";
+	if (snakeBody.offsetLeft == randomBox.offsetLeft && snakeBody.offsetTop == randomBox.offsetTop) {
+		randomBox.remove();
+		resultOfGame++;
+		createRandomBox();
+	}
 }
 
 function keyLeft() {
-	y--;
+	var randomBox = document.querySelector(".randomBox");
+	y -= snakeBody.offsetWidth;
 	snakeBody.style.left = y + "px";
+	if (snakeBody.offsetLeft == randomBox.offsetLeft && snakeBody.offsetTop == randomBox.offsetTop) {
+		randomBox.remove();
+		resultOfGame++;
+		createRandomBox();
+	}
 }
